@@ -16,19 +16,35 @@ mongoose.connect('mongodb://localhost:27017/ward', {
 
 // Profile Schema
 const profileSchema = new mongoose.Schema({
+    first_name: String,
+    last_name: String,
+    address: String,
     email: String,
     age: String,
+    birthday: String,
     about: String,
 });
 
 const Profile = mongoose.model('Profile', profileSchema);
 
+// Message Schema
+const messageSchema = new mongoose.Schema({
+    _id: Number,
+    message: String,
+});
+
+const Message = mongoose.model('Message', messageSchema);
+
 // This is a CRUD api
 // Create A Profile
 app.post('/api/profiles', async(req, res) => {
     const profile = new Profile({
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        address: req.body.address,
         email: req.body.email,
         age: req.body.age,
+        birthday: req.body.birthday,
         about: req.body.about
     });
     try {
