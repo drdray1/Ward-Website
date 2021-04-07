@@ -59,13 +59,12 @@
           <strong>Written Messages</strong>
         </div>
         <!--<div v-if="getMessages(profile)"></div>-->
-        <div v-for="message in messages" :key="message._id">
-          <div v-if="profile._id === message.profile" class="ml-3">
+        <ul>
+          <li v-for="message in this.messages[profile._id]" :key="message._id">
             {{message.text}}
             <button @click="deleteMessage(profile, message)" class="btn-sm btn-danger btn-sm m-2">Delete</button>
-          </div>
-        </div>
-
+          </li>
+        </ul>
         <form @submit.prevent="writeMessage(profile)">
           <div class="form-group m-3">
             <label :for="'messageTextArea' + profile._id">New Message</label>
@@ -81,13 +80,14 @@
 
 <script>
 import axios from 'axios';
+import Vue from 'vue';
 
 export default {
 name: "Members",
   data() {
     return {
       profiles: [],
-      messages: [],
+      messages: {},
       email: "",
       about: "",
       age: "",
@@ -96,13 +96,18 @@ name: "Members",
   },
   created() {
     this.getProfiles();
-    this.getMessagesInit();
   },
   methods: {
     async getProfiles() {
       try {
         let resp = await axios.get("/api/profiles");
         this.profiles = resp.data;
+        // for loop to call get messages on each profile and put those messages in the profiles array
+        // this.profiles[0].messages =
+        for (let profile of this.profiles) {
+          Vue.set(this.messages, profile._id, await this.getMessages(profile._id));
+          // this.profiles[x].messages = this.getMessages(this.profiles[x]);
+        }
         return true;
       } catch (error) {
         console.log(error);
@@ -132,26 +137,18 @@ name: "Members",
         await axios.post('/api/profiles/' + profile._id + '/messages', {
           text: document.getElementById('messageTextArea' + profile._id).value,
         });
-        await this.getMessages(profile);
+        // console.log(document.getElementById('messageTextArea' + profile._id).value);
+        await this.getMessages(profile._id);
       } catch(error) {
         console.log(error);
       }
     },
-    async getMessages(profile) {
+    async getMessages(profileID) {
       try {
-        const response = await axios.get('/api/profiles/' + profile._id + '/messages');
-        this.messages = response.data;
-        return response.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async getMessagesInit() {
-      try {
-        const response = await axios.get('/api/messages');
-        console.log(response);
-        this.messages = response.data;
-        return true;
+        const response = await axios.get('/api/profiles/' + profileID + '/messages');
+        Vue.set(this.messages, profileID, response.data);
+        // this.profiles[idx].messages = response.data;
+        return this.messages[profileID];
       } catch (error) {
         console.log(error);
       }
@@ -159,7 +156,7 @@ name: "Members",
     async deleteMessage(profile, message){
       try {
         await axios.delete('/api/profiles/' + profile._id + '/messages/' + message._id);
-        await this.getMessages(profile);
+        await this.getMessages(profile._id);
       } catch (error) {
         console.log(error);
       }

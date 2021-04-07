@@ -172,6 +172,17 @@ app.delete('/api/profiles/:profileID/messages/:messageID', async(req, res) => {
         console.log(error);
         res.sendStatus(500);
     }
-})
+});
+
+app.get('/api/messages', async (req, res) => {
+    try {
+        let messages = await Message.find();
+        res.send(messages);
+        console.log("SERVER: Read Messages");
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
 
 app.listen(3000, () => console.log('Todo server listening on port 3000!'));
