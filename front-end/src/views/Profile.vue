@@ -3,7 +3,7 @@
     <div class="jumbotron jumbotron-fluid rounded">
       <div class="container">
         <h1 class="display-4">Profile</h1>
-        <p class="lead">Create or edit your ward profile!</p>
+        <p class="lead">Create your ward profile!</p>
       </div>
     </div>
     <div v-if="profile">
@@ -63,7 +63,6 @@ name: "Profile",
       address: '',
       birthday: '',
       addProfile: null,
-      profiles: {},
     }
   },
   created() {
@@ -87,16 +86,6 @@ name: "Profile",
         console.log(error);
       }
     },
-    async getProfiles() {
-      try {
-        let response = await axios.get('/api/profiles');
-        this.profiles = response.data;
-        console.log("CLIENT: Got Profile");
-        return true;
-      } catch (error) {
-        console.log(error);
-      }
-    }
   }
 }
 </script>

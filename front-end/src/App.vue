@@ -10,14 +10,14 @@
           <li class="nav-item active">
             <router-link to="/" class="nav-link">Home</router-link>
           </li>
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <router-link to="/message_board" class="nav-link">Message Board</router-link>
-          </li>
+          </li>-->
           <li class="nav-item">
             <router-link to="/members" class="nav-link">Members</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/profile" class="nav-link">My Profile</router-link>
+            <router-link to="/profile" class="nav-link">Create Profile</router-link>
           </li>
         </ul>
       </div>

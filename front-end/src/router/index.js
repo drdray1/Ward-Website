@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Profile from "../views/Profile";
 import Members from "../views/Members";
-import MessageBoard from "../views/MessageBoard";
+// import MessageBoard from "../views/MessageBoard";
 
 Vue.use(VueRouter)
 
@@ -23,11 +23,11 @@ const routes = [
     name: 'Members',
     component: Members
   },
-  {
+  /*{
     path: '/message_board',
     name: 'MessageBoard',
     component: MessageBoard
-  }
+  }*/
 ]
 
 const router = new VueRouter({
